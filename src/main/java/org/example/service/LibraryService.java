@@ -45,15 +45,37 @@ public class LibraryService {
         return users.get(id);
     }
 
-    public void addBook(Book book) {}
+    public void addBook(Book book) {
+        books.putIfAbsent(book.getId(), book);
+    }
 
-    public void addUser(User user) {}
+    public void addUser(User user) {
+        users.putIfAbsent(user.getId(), user);
+    }
 
-    public void getAllUsers() {}
+    public void getAllUsers() {
+        for (User value : users.values()) {
+            System.out.println(value);
+        }
+    }
 
-    public void getAllBooks() {}
+    public void getAllBooks() {
+        for (Book value : books.values()) {
+            System.out.println(value);
+        }
+    }
 
-    public void deleteBook() {}
+    public void deleteBook(Book book) {
+        if (bookToUser.containsKey(book.getId()) || !book.isAvailable()) {
+            throw new RuntimeException("нельзя удалить книгу, так как она у пользователя");
+        }
+        books.remove(book.getId());
+    }
 
-    public void deleteUser() {}
+    public void deleteUser(User user) {
+        if (bookToUser.containsValue(user)) {
+            throw new RuntimeException("сначало пользователь должен вернуть книгу");
+        }
+        users.remove(user);
+    }
 }

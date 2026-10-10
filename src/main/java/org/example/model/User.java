@@ -39,6 +39,15 @@ public class User {
         System.out.println(book.getId() + " " + book.getTitle() + " книга добавлена");
     }
 
+    public boolean hasBook(Book book) {
+        for (Book currentBook : books) {
+            if (book.equals(currentBook)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void deleteBook(Book book) {
         books.remove(book);
         System.out.println(book.getTitle() + " книга удалена");

@@ -28,7 +28,7 @@ public class User {
     }
 
     public Set<Book> getBooks() {
-        return books;
+        return Collections.unmodifiableSet(books);
     }
 
     public void addBook(Book book) {
@@ -45,7 +45,7 @@ public class User {
         return false;
     }
 
-    public void deleteBook(Book book) {
+    public void removeBook(Book book) {
         books.remove(book);
         System.out.println(book.getTitle() + " книга удалена");
     }

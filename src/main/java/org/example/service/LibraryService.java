@@ -43,7 +43,7 @@ public class LibraryService {
             throw new IllegalArgumentException("");
         }
         book.setAvailable(true);
-        user.deleteBook(book);
+        user.removeBook(book);
         System.out.println(user.getName() + " вернул " + book.getTitle() + " книгу обратно ");
     }
 
@@ -68,10 +68,22 @@ public class LibraryService {
     }
 
     public void addBook(Book book) {
+        if (book == null || book.getId() == null) {
+            throw new IllegalArgumentException("книга и ее id обязательны");
+        }
+        if (books.containsKey(book.getId())) {
+            throw new IllegalArgumentException("книга с id " + book.getId() + " уже есть");
+        }
         books.putIfAbsent(book.getId(), book);
     }
 
     public void addUser(User user) {
+        if (user == null || user.getId() == null) {
+            throw new IllegalArgumentException("пользователь и его id обязательны");
+        }
+        if (users.containsKey(user.getId())) {
+            throw new IllegalArgumentException("уже есть такой пользователь");
+        }
         users.putIfAbsent(user.getId(), user);
     }
 

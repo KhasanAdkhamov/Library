@@ -1,9 +1,6 @@
 package org.example.model;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class User {
     private Integer id;
@@ -51,5 +48,13 @@ public class User {
     public void deleteBook(Book book) {
         books.remove(book);
         System.out.println(book.getTitle() + " книга удалена");
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", age=" + age;
     }
 }

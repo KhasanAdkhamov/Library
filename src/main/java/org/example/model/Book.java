@@ -38,4 +38,15 @@ public class Book {
     public void setAvailable(boolean available) {
         isAvailable = available;
     }
+
+    @Override
+    public String toString() {
+        return "Book{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", author='" + author + '\'' +
+                ", year=" + year +
+                ", isAvailable=" + isAvailable +
+                '}';
+    }
 }

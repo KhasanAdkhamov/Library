@@ -3,10 +3,9 @@ package org.example.service;
 import org.example.model.Book;
 import org.example.model.User;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.NoSuchElementException;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
+
 //убрать bookToUser
 //нет проверки при добавлении книги
 //поменять сигнатуры методы
@@ -76,16 +75,22 @@ public class LibraryService {
         users.putIfAbsent(user.getId(), user);
     }
 
-    public void getAllUsers() {
-        for (User value : users.values()) {
-            System.out.println(value);
+    public List<User> getAllUsers() {
+        if (users.isEmpty()) {
+            throw new NullPointerException("нет пользователей");
         }
+        return users.values().stream()
+                .sorted(Comparator.comparing(User::getId))
+                .toList();
     }
 
-    public void getAllBooks() {
-        for (Book value : books.values()) {
-            System.out.println(value);
+    public List<Book> getAllBooks() {
+        if (books.isEmpty()) {
+            throw new NullPointerException("нет книг");
         }
+        return books.values().stream()
+                .sorted(Comparator.comparing(Book::getId))
+                .collect(Collectors.toList());
     }
 
     public void deleteBook(Integer bookId) {

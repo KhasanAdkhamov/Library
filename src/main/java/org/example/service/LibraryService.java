@@ -79,18 +79,20 @@ public class LibraryService {
         if (users.isEmpty()) {
             throw new NullPointerException("нет пользователей");
         }
-        return users.values().stream()
+        List<User> userList = users.values().stream()
                 .sorted(Comparator.comparing(User::getId))
                 .toList();
+        return List.copyOf(userList);
     }
 
     public List<Book> getAllBooks() {
         if (books.isEmpty()) {
             throw new NullPointerException("нет книг");
         }
-        return books.values().stream()
+        List<Book> bookList = books.values().stream()
                 .sorted(Comparator.comparing(Book::getId))
-                .collect(Collectors.toList());
+                .toList();
+        return List.copyOf(bookList);
     }
 
     public void deleteBook(Integer bookId) {

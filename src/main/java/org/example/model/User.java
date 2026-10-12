@@ -37,17 +37,11 @@ public class User {
     }
 
     public boolean hasBook(Book book) {
-        for (Book currentBook : books) {
-            if (book.equals(currentBook)) {
-                return true;
-            }
-        }
-        return false;
+        return books.contains(book);
     }
 
     public void removeBook(Book book) {
         books.remove(book);
-        System.out.println(book.getTitle() + " книга удалена");
     }
 
     @Override

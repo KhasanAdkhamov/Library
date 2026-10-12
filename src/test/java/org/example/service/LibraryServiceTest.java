@@ -1,16 +1,11 @@
-package test;
+package org.example.service;
 
 import org.example.model.Book;
 import org.example.model.User;
-import org.example.service.LibraryService;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvSource;
 
-public class TestLibrary {
+public class LibraryServiceTest {
     private LibraryService libraryService;
 
     @BeforeEach
@@ -28,6 +23,6 @@ public class TestLibrary {
 
     @Test
     void testBorrowBook() {
-        libraryService.borrowBook();
+
     }
 }

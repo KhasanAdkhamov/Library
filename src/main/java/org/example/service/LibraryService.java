@@ -4,12 +4,7 @@ import org.example.model.Book;
 import org.example.model.User;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
-//убрать bookToUser
-//нет проверки при добавлении книги
-//поменять сигнатуры методы
-//создать собственное исключение под конкретную ситуацию
 //если у нас id = null и книга без id, то мы без бросаем IllegalArgumentException
 //если у нас нет объекта с таким id NoSuchElementException
 //если книга уже выдана IllegalStateException
@@ -26,7 +21,7 @@ public class LibraryService {
         User user = getUserById(userId);
         Book book = getBookById(bookId);
         if (!book.isAvailable()) {
-            throw new IllegalArgumentException("книги нет, " + user.getName() + " выбери другую");
+            throw new IllegalStateException("книги нет, " + user.getName() + " выбери другую");
         }
         book.setAvailable(false);
         user.addBook(book);
@@ -37,10 +32,10 @@ public class LibraryService {
         Book book = getBookById(bookId);
         User user = getUserById(userId);
         if (book.isAvailable()) {
-            throw new RuntimeException("книгу не выдавалась");
+            throw new IllegalStateException("книгу не выдавалась");
         }
         if (!user.hasBook(book)) {
-            throw new IllegalArgumentException("");
+            throw new IllegalStateException("");
         }
         book.setAvailable(true);
         user.removeBook(book);
@@ -74,7 +69,7 @@ public class LibraryService {
         if (books.containsKey(book.getId())) {
             throw new IllegalArgumentException("книга с id " + book.getId() + " уже есть");
         }
-        books.putIfAbsent(book.getId(), book);
+        books.put(book.getId(), book);
     }
 
     public void addUser(User user) {
@@ -82,29 +77,27 @@ public class LibraryService {
             throw new IllegalArgumentException("пользователь и его id обязательны");
         }
         if (users.containsKey(user.getId())) {
-            throw new IllegalArgumentException("уже есть такой пользователь");
+            throw new IllegalStateException("уже есть такой пользователь");
         }
-        users.putIfAbsent(user.getId(), user);
+        users.put(user.getId(), user);
     }
 
     public List<User> getAllUsers() {
         if (users.isEmpty()) {
-            throw new NullPointerException("нет пользователей");
+            return new ArrayList<>();
         }
-        List<User> userList = users.values().stream()
+        return users.values().stream()
                 .sorted(Comparator.comparing(User::getId))
                 .toList();
-        return List.copyOf(userList);
     }
 
     public List<Book> getAllBooks() {
         if (books.isEmpty()) {
-            throw new NullPointerException("нет книг");
+            return new ArrayList<>();
         }
-        List<Book> bookList = books.values().stream()
+        return books.values().stream()
                 .sorted(Comparator.comparing(Book::getId))
                 .toList();
-        return List.copyOf(bookList);
     }
 
     public void deleteBook(Integer bookId) {

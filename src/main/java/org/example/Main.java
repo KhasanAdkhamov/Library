@@ -3,6 +3,10 @@ package org.example;
 import org.example.model.Book;
 import org.example.model.User;
 import org.example.service.LibraryService;
+import org.example.task.PracticeAdapter;
+
+import java.util.List;
+import java.util.Map;
 
 public class Main {
     public static void main(String[] args) {
@@ -24,7 +28,8 @@ public class Main {
         libraryService.returnBook(user1.getId(), book2.getId());
         libraryService.deleteUser(user1.getId());
 
-
+        Map<String, Object> check = PracticeAdapter.check(List.of(1, 2, 3), List.of(4, 5, 6));
+        System.out.println(check);
 
     }
 }

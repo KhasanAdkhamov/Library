@@ -2,7 +2,7 @@ package org.example.model;
 
 import java.util.*;
 
-public class User {
+public class User{
     private Integer id;
     private String name;
     private int age;

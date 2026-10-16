@@ -1,0 +1,39 @@
+package org.example.model;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.Objects;
+//метод findAll
+public class Repository <T extends Identifiable>{
+    private Map<Integer, T> elements;
+
+    public Repository() {
+        this.elements = new HashMap<>();
+    }
+
+    public T getById(Integer id) {
+        if (id == null) {
+            throw new IllegalArgumentException("нет такого id");
+        }
+        if (!elements.containsKey(id)) {
+            throw new NoSuchElementException("не cуществует объекта с таким id");
+        }
+        return elements.get(id);
+    }
+
+    public void add(T element) {
+        if (element == null || element.getId() == null) {
+            throw new IllegalArgumentException("книга и ее id обязательны");
+        }
+        if (elements.containsKey(element.getId())) {
+            throw new IllegalStateException("книга с id " + element.getId() + " уже есть");
+        }
+        elements.put(element.getId(), element);
+    }
+
+    public void delete(Integer id) {
+        T element = getById(id);
+        elements.remove(id);
+    }
+}

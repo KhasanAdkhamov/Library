@@ -6,22 +6,28 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
+//бросать соответствующее исключение
+//добавить объекты, которые используются в тестах
 public class LibraryServiceTest {
     private LibraryService libraryService;
     private User user;
     private Book book;
+    private User user1;
+    private User user2;
+    private Book book1;
+
 
     @BeforeEach
     void setUp() {
         libraryService = new LibraryService();
-
-        libraryService.addBook(new Book(1, "война и мир", "Л.Т", 1970));
+        book1 = new Book(1, "война и мир", "Л.Т", 1970);
+        libraryService.addBook(book1);
         libraryService.addBook(new Book(2, "гарри поттер", "А.Г", 2000));
         libraryService.addBook(new Book(3, "Сила слова", "Г.Д", 2010));
-
-        libraryService.addUser(new User(1, "Иван", 18));
-        libraryService.addUser(new User(2, "Лера", 22));
+        user1 = new User(1, "Иван", 18);
+        user2 = new User(2, "Лера", 22);
+        libraryService.addUser(user1);
+        libraryService.addUser(user2);
         libraryService.addUser(new User(3, "Антон", 25));
     }
 
@@ -29,8 +35,19 @@ public class LibraryServiceTest {
     void testBorrowBook() {
         int userId = 1;
         int bookId = 1;
-        libraryService.borrowBook(userId, bookId);
+        libraryService.borrowBook(user1.getId(), bookId);
         Assertions.assertFalse(libraryService.getBookById(bookId).isAvailable());
+    }
+
+    @Test
+    void testHasBookAfterBorrowing() {
+        libraryService.borrowBook(user1.getId(), book1.getId());
+        Assertions.assertThrows(IllegalStateException.class, () -> {
+            libraryService.borrowBook(user2.getId(), book1.getId());
+        });
+        Assertions.assertTrue(user1.hasBook(book1));
+        Assertions.assertFalse(user2.hasBook(book1));
+        Assertions.assertTrue(user2.getBooks().isEmpty());
     }
 
     @Test
@@ -39,7 +56,7 @@ public class LibraryServiceTest {
         int userId2 = 2;
         int bookId = 1;
         libraryService.borrowBook(userId, bookId);
-        Assertions.assertThrows(RuntimeException.class, () -> {
+        Assertions.assertThrows(IllegalStateException.class, () -> {
             libraryService.borrowBook(userId2, bookId);
         });
     }
@@ -80,4 +97,5 @@ public class LibraryServiceTest {
     void testIsAvailable() {
         Assertions.assertTrue(libraryService.getBookById(1).isAvailable());
     }
+
 }

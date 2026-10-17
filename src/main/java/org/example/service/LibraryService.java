@@ -23,10 +23,7 @@ public class LibraryService{
     public void borrowBook(Integer userId, Integer bookId) {
         User user = getUserById(userId);
         Book book = getBookById(bookId);
-        if (book.getStatus() != Status.AVAILABLE) {
-            throw new IllegalStateException("книги нет, " + user.getName() + " выбери другую");
-        }
-        book.setStatus(Status.BORROWED);
+        book.borrow();
         user.addBook(book);
         System.out.println(user.getName() + " выдана книга " + book.getTitle());
     }
@@ -34,13 +31,10 @@ public class LibraryService{
     public void returnBook(Integer userId, Integer bookId) {
         Book book = getBookById(bookId);
         User user = getUserById(userId);
-        if (book.getStatus() == Status.AVAILABLE) {
-            throw new IllegalStateException("книгу не выдавалась");
-        }
+        book.giveBack();
         if (!user.hasBook(book)) {
             throw new IllegalStateException("книги нет у пользователя");
         }
-        book.setStatus(Status.AVAILABLE);
         user.removeBook(book);
         System.out.println(user.getName() + " вернул " + book.getTitle() + " книгу обратно ");
     }
@@ -111,21 +105,5 @@ public class LibraryService{
             throw new IllegalStateException("у читателя есть книги");
         }
         users.remove(user.getId());
-    }
-
-    public void sendToRepair(Integer bookId) {
-        Book book = getBookById(bookId);
-        if (book.getStatus() == Status.BORROWED) {
-            throw new IllegalStateException("книга у пользователя, нельзя отправить в ремонт");
-        }
-        if (book.getStatus() == Status.IN_REPAIR) {
-            throw new IllegalStateException("книга уже и так в ремонте");
-        }
-        book.setStatus(Status.IN_REPAIR);
-        System.out.println("книга " + book.getTitle() + " в ремонте");
-    }
-
-    public void finishRepair() {
-
     }
 }

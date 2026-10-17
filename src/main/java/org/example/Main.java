@@ -25,6 +25,7 @@ public class Main {
         libraryService.addBook(book2);
         libraryService.addUser(user1);
         libraryService.borrowBook(user1.getId(), book2.getId());
+        //libraryService.borrowBook(user1.getId(), book2.getId());
         libraryService.returnBook(user1.getId(), book2.getId());
         libraryService.deleteUser(user1.getId());
 

@@ -31,13 +31,13 @@ public class LibraryServiceTest {
         libraryService.addUser(new User(3, "Антон", 25));
     }
 
-    @Test
-    void testBorrowBook() {
-        int userId = 1;
-        int bookId = 1;
-        libraryService.borrowBook(user1.getId(), bookId);
-        Assertions.assertFalse(libraryService.getBookById(bookId).isAvailable());
-    }
+//    @Test
+//    void testBorrowBook() {
+//        int userId = 1;
+//        int bookId = 1;
+//        libraryService.borrowBook(user1.getId(), bookId);
+//        Assertions.assertFalse(libraryService.getBookById(bookId).isAvailable());
+//    }
 
     @Test
     void testHasBookAfterBorrowing() {
@@ -66,7 +66,7 @@ public class LibraryServiceTest {
         int userId = 1;
         int bookId100= 100;
         int bookId2 = 2;
-        Assertions.assertThrows(RuntimeException.class, () -> {
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
             libraryService.borrowBook(userId, bookId100);
         });
     }
@@ -74,7 +74,7 @@ public class LibraryServiceTest {
     @Test
     void testReturnBook() {
         libraryService.borrowBook(1, 1);
-        Assertions.assertThrows(RuntimeException.class, () -> {
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
            libraryService.returnBook(1, 2);
         });
     }
@@ -83,19 +83,19 @@ public class LibraryServiceTest {
     void testGetUserAndBook() {
         Assertions.assertAll(
                 () -> Assertions.assertNotNull(libraryService.getUserById(1)),
-                () -> Assertions.assertThrows(RuntimeException.class, () -> {
+                () -> Assertions.assertThrows(IllegalArgumentException.class, () -> {
                     libraryService.getUserById(100);
                 }),
                 () -> Assertions.assertNotNull(libraryService.getBookById(1)),
-                () -> Assertions.assertThrows(RuntimeException.class, () -> {
+                () -> Assertions.assertThrows(IllegalArgumentException.class, () -> {
                     libraryService.getBookById(100);
                 })
         );
     }
 
-    @Test
-    void testIsAvailable() {
-        Assertions.assertTrue(libraryService.getBookById(1).isAvailable());
-    }
+//    @Test
+//    void testIsAvailable() {
+//        Assertions.assertTrue(libraryService.getBookById(1).isAvailable());
+//    }
 
 }

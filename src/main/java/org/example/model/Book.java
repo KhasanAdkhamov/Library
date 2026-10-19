@@ -2,7 +2,7 @@ package org.example.model;
 
 import java.util.Objects;
 
-public class Book {
+public class Book implements Identifiable {
     private Integer id;
     private String title;
     private String author;
@@ -18,6 +18,7 @@ public class Book {
         this.status = Status.AVAILABLE;
     }
 
+    @Override
     public Integer getId() {
         return id;
     }

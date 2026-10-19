@@ -2,7 +2,7 @@ package org.example.model;
 
 import java.util.*;
 
-public class User{
+public class User implements Identifiable{
     private Integer id;
     private String name;
     private int age;
@@ -15,6 +15,7 @@ public class User{
         this.books = new HashSet<>();
     }
 
+    @Override
     public Integer getId() {
         return id;
     }

@@ -1,15 +1,13 @@
 package org.example.model;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.NoSuchElementException;
-import java.util.Objects;
+import java.util.*;
+
 //метод findAll
 public class Repository <T extends Identifiable>{
     private Map<Integer, T> elements;
 
     public Repository() {
-        this.elements = new HashMap<>();
+        this.elements = new LinkedHashMap<>();
     }
 
     public T getById(Integer id) {
@@ -35,5 +33,11 @@ public class Repository <T extends Identifiable>{
     public void delete(Integer id) {
         T element = getById(id);
         elements.remove(id);
+    }
+
+    public List<T> findAll() {
+        List<T> list = elements.values().stream()
+                .toList();
+        return List.copyOf(list);
     }
 }

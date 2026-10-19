@@ -40,7 +40,23 @@ public class LibraryService{
         System.out.println(user.getName() + " вернул " + book.getTitle() + " книгу обратно ");
     }
 
-//    public Book getBookById(Integer id) {
+    public Repository<Book> getBooks() {
+        return books;
+    }
+
+    public Repository<User> getUsers() {
+        return users;
+    }
+
+    public void setBooks(Repository<Book> books) {
+        this.books = books;
+    }
+
+    public void setUsers(Repository<User> users) {
+        this.users = users;
+    }
+
+    //    public Book getBookById(Integer id) {
 //        if (id == null) {
 //            throw new IllegalArgumentException("нет такого id");
 //        }

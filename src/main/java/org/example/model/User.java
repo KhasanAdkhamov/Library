@@ -42,6 +42,9 @@ public class User implements Identifiable{
     }
 
     public void removeBook(Book book) {
+        if (!books.contains(book)) {
+            throw new IllegalArgumentException("нет данной книги для удаления");
+        }
         books.remove(book);
     }
 

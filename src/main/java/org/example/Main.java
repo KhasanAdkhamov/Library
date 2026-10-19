@@ -1,12 +1,14 @@
 package org.example;
 
 import org.example.model.Book;
+import org.example.model.Repository;
 import org.example.model.User;
 import org.example.service.LibraryService;
 import org.example.task.PracticeAdapter;
 
 import java.util.List;
 import java.util.Map;
+import java.util.jar.JarEntry;
 
 public class Main {
     public static void main(String[] args) {
@@ -21,16 +23,24 @@ public class Main {
 //        System.out.println(libraryService.getAllUsers());
         Book book2 = new Book(2, "book2", "L.L", 2005);
         User user1 = new User(1, "Ivan", 22);
-        LibraryService libraryService = new LibraryService();
-        libraryService.addBook(book2);
-        libraryService.addUser(user1);
-        libraryService.borrowBook(user1.getId(), book2.getId());
-        //libraryService.borrowBook(user1.getId(), book2.getId());
-        libraryService.returnBook(user1.getId(), book2.getId());
-        libraryService.deleteUser(user1.getId());
+        User user2 = new User(2, "Антон", 30);
 
-        Map<String, Object> check = PracticeAdapter.check(List.of(1, 2, 3), List.of(4, 5, 6));
-        System.out.println(check);
+        LibraryService libraryService = new LibraryService();
+        Repository<Book> bookRepository = new Repository<>();
+        Repository<User> userRepository = new Repository<>();
+        libraryService.setUsers(userRepository);
+        libraryService.setBooks(bookRepository);
+        bookRepository.add(book2);
+        userRepository.add(user1);
+        userRepository.add(user2);
+        libraryService.borrowBook(user1.getId(), book2.getId());
+        libraryService.borrowBook(user2.getId(), book2.getId());
+
+        //libraryService.borrowBook(user1.getId(), book2.getId());
+//        libraryService.returnBook(user1.getId(), book2.getId());
+//
+//        Map<String, Object> check = PracticeAdapter.check(List.of(1, 2, 3), List.of(4, 5, 6));
+//        System.out.println(check);
 
     }
 }

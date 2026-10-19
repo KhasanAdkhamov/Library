@@ -47,6 +47,7 @@ public class Book implements Identifiable {
         if (status != Status.AVAILABLE) {
             throw new IllegalStateException("Книгу нельзя выдать");
         }
+        this.status = Status.BORROWED;
         return Status.BORROWED;
     }
 
@@ -54,6 +55,7 @@ public class Book implements Identifiable {
         if (status != Status.BORROWED) {
             throw new IllegalStateException("Книгу нельзя вернуть");
         }
+        this.status = Status.AVAILABLE;
         return Status.AVAILABLE;
     }
 
@@ -61,6 +63,7 @@ public class Book implements Identifiable {
         if (status != Status.AVAILABLE) {
             throw new IllegalStateException("Книгу нельзя сдать в ремонт");
         }
+        this.status = Status.IN_REPAIR;
         return Status.IN_REPAIR;
     }
 
@@ -68,8 +71,11 @@ public class Book implements Identifiable {
         if (status != Status.IN_REPAIR) {
             throw new IllegalStateException("Книга не в ремонте ");
         }
+        this.status = Status.AVAILABLE;
         return Status.AVAILABLE;
     }
+
+
 
     @Override
     public boolean equals(Object o) {

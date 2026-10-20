@@ -2,9 +2,11 @@ package org.example.service;
 
 import org.example.model.Book;
 import org.example.model.Repository;
+import org.example.model.Status;
 import org.example.model.User;
 import org.junit.jupiter.api.*;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 
 //бросать соответствующее исключение
@@ -82,6 +84,40 @@ public class LibraryServiceTest {
         libraryService.borrowBook(user1.getId(), book1.getId());
         Assertions.assertThrows(IllegalStateException.class, ()-> {
            libraryService.returnBook(user1.getId(), book3.getId());
+        });
+    }
+
+    @Test
+    void bookOfAnotherReaderIsNotReturned() {
+        libraryService.borrowBook(user1.getId(), book1.getId());
+        Assertions.assertThrows(IllegalStateException.class, ()-> {
+            libraryService.returnBook(user2.getId(), book1.getId());
+        });
+        Assertions.assertEquals(Status.BORROWED, book1.getStatus());
+        Assertions.assertTrue(user1.hasBook(book1));
+    }
+
+    @Test
+    void deleteIfBookBorrowed() {
+        libraryService.borrowBook(user1.getId(), book1.getId());
+        Assertions.assertThrows(IllegalStateException.class, () -> {
+            libraryService.deleteBook(book1.getId());
+        });
+    }
+
+    @Test
+    void deleteIfUserHasBook() {
+        libraryService.borrowBook(user2.getId(), book1.getId());
+        Assertions.assertThrows(IllegalStateException.class, () -> {
+            libraryService.deleteUser(user2.getId());
+        });
+    }
+
+    @Test
+    void deleteUserHasNotBook() {
+        libraryService.deleteUser(user1.getId());
+        Assertions.assertThrows(NoSuchElementException.class, ()-> {
+            userRepository.getById(user1.getId());
         });
     }
 

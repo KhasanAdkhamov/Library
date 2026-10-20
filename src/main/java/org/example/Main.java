@@ -2,10 +2,13 @@ package org.example;
 
 import org.example.model.Book;
 import org.example.model.Repository;
+import org.example.model.Status;
 import org.example.model.User;
 import org.example.service.LibraryService;
 import org.example.task.PracticeAdapter;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.jar.JarEntry;
@@ -34,13 +37,23 @@ public class Main {
         userRepository.add(user1);
         userRepository.add(user2);
         libraryService.borrowBook(user1.getId(), book2.getId());
-        libraryService.borrowBook(user2.getId(), book2.getId());
+        libraryService.returnBook(user1.getId(), book2.getId());
+
 
         //libraryService.borrowBook(user1.getId(), book2.getId());
 //        libraryService.returnBook(user1.getId(), book2.getId());
 //
 //        Map<String, Object> check = PracticeAdapter.check(List.of(1, 2, 3), List.of(4, 5, 6));
 //        System.out.println(check);
+        List<Book> all = libraryService.getBooks().findAll();
+        List<Book> newBooks = new ArrayList<>();
+        for (Book book : all) {
+            if (book.getStatus() == Status.AVAILABLE) {
+                newBooks.add(book);
+            }
+        }
+        List<Book> list = newBooks.stream().sorted().toList();
+        System.out.println(list);
 
     }
 }

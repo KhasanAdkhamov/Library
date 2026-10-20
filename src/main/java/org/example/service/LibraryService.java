@@ -24,19 +24,27 @@ public class LibraryService{
     public void borrowBook(Integer userId, Integer bookId) {
         Book book = books.getById(bookId);
         User user = users.getById(userId);
-        book.borrow();
+        //book.borrow();
+        if (book.getStatus() != Status.AVAILABLE) {
+            throw new IllegalStateException("Книгу нельзя выдать");
+        }
+
         user.addBook(book);
+        book.setStatus(Status.BORROWED);
         System.out.println(user.getName() + " выдана книга " + book.getTitle());
     }
 
     public void returnBook(Integer userId, Integer bookId) {
         Book book = books.getById(bookId);
         User user = users.getById(userId);
-        book.giveBack();
         if (!user.hasBook(book)) {
             throw new IllegalStateException("книги нет у пользователя");
         }
+        if (book.getStatus() != Status.BORROWED) {
+            throw new IllegalStateException("книга нельзя выдать");
+        }
         user.removeBook(book);
+        book.setStatus(Status.AVAILABLE);
         System.out.println(user.getName() + " вернул " + book.getTitle() + " книгу обратно ");
     }
 
@@ -56,73 +64,21 @@ public class LibraryService{
         this.users = users;
     }
 
-    //    public Book getBookById(Integer id) {
-//        if (id == null) {
-//            throw new IllegalArgumentException("нет такого id");
-//        }
-//        if (!books.containsKey(id)) {
-//            throw new NoSuchElementException("не cуществует объекта с таким id");
-//        }
-//        return books.get(id);
-//    }
+    public void deleteBook(Integer bookId) {
+        Book book = books.getById(bookId);
+        if (book.getStatus() != Status.AVAILABLE) {
+            throw new IllegalStateException("нельзя удалить книгу, так как она у пользователя");
+        }
+        books.delete(bookId);
+    }
 
-//    public User getUserById(Integer id) {
-//        if (id == null) {
-//            throw new IllegalArgumentException("нет такого id");
-//        }
-//        if (!users.containsKey(id)) {
-//            throw new NoSuchElementException("не cуществует объекта с таким id");
-//        }
-//        return users.get(id);
-//    }
-
-//    public void addBook(Book book) {
-//        if (book == null || book.getId() == null) {
-//            throw new IllegalArgumentException("книга и ее id обязательны");
-//        }
-//        if (books.containsKey(book.getId())) {
-//            throw new IllegalStateException("книга с id " + book.getId() + " уже есть");
-//        }
-//        books.put(book.getId(), book);
-//    }
-
-//    public void addUser(User user) {
-//        if (user == null || user.getId() == null) {
-//            throw new IllegalArgumentException("пользователь и его id обязательны");
-//        }
-//        if (users.containsKey(user.getId())) {
-//            throw new IllegalStateException("уже есть такой пользователь");
-//        }
-//        users.put(user.getId(), user);
-//    }
-
-//    public List<User> getAllUsers() {
-//        return users.values().stream()
-//                .sorted(Comparator.comparing(User::getId))
-//                .toList();
-//    }
-//
-//    public List<Book> getAllBooks() {
-//        return books.values().stream()
-//                .sorted(Comparator.comparing(Book::getId))
-//                .toList();
-//    }
-
-//    public void deleteBook(Integer bookId) {
-//        Book book = getBookById(bookId);
-//        if (book.getStatus() == Status.BORROWED) {
-//            throw new IllegalStateException("нельзя удалить книгу, так как она у пользователя");
-//        }
-//        books.remove(bookId);
-//    }
-
-//    public void deleteUser(Integer userId) {
-//        User user = getUserById(userId);
-//        if (!user.getBooks().isEmpty()) {
-//            throw new IllegalStateException("у читателя есть книги");
-//        }
-//        users.remove(user.getId());
-//    }
+    public void deleteUser(Integer userId) {
+        User user = users.getById(userId);
+        if (!user.getBooks().isEmpty()) {
+            throw new IllegalStateException("у читателя есть книги");
+        }
+        users.delete(user.getId());
+    }
 
 
 }

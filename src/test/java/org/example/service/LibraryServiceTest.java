@@ -5,6 +5,8 @@ import org.example.model.Repository;
 import org.example.model.Status;
 import org.example.model.User;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -118,6 +120,14 @@ public class LibraryServiceTest {
         libraryService.deleteUser(user1.getId());
         Assertions.assertThrows(NoSuchElementException.class, ()-> {
             userRepository.getById(user1.getId());
+        });
+    }
+
+    @ParameterizedTest
+    @CsvSource({"1, война и мир, Л.Т, 1970", "5, гордость и предупреждение, Д.А, 1999", "7, психология лжи, П.Э, 2002"})
+    void repositoryTest(Integer id, String title, String author, int year) {
+        Assertions.assertThrows(IllegalStateException.class, () -> {
+            bookRepository.add(new Book(id, title, author, year));
         });
     }
 

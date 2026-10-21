@@ -131,6 +131,19 @@ public class LibraryServiceTest {
         });
     }
 
+    @ParameterizedTest
+    @CsvSource({"1", "5", "7"})
+    void testRepositoryIfNotId(Integer id) {
+        Assertions.assertThrows(NoSuchElementException.class, ()-> {
+           userRepository.getById(id);
+        });
+    }
+
+//    @Test
+//    void testFindAll() {
+//        userRepository.findAll().;
+//    }
+
 
 //    @Test
 //    void testBorrowBook() {

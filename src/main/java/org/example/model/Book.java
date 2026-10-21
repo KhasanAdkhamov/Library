@@ -7,7 +7,7 @@ public class Book implements Identifiable {
     private String title;
     private String author;
     private int year;
-    private Status status;
+    private BookStatus status;
     //private boolean isAvailable;
 
     public Book(Integer id, String title, String author, int year) {
@@ -15,7 +15,7 @@ public class Book implements Identifiable {
         this.title = title;
         this.author = author;
         this.year = year;
-        this.status = Status.AVAILABLE;
+        this.status = BookStatus.AVAILABLE;
     }
 
     @Override
@@ -35,41 +35,41 @@ public class Book implements Identifiable {
         return year;
     }
 
-    public Status getStatus() {
+    public BookStatus getStatus() {
         return status;
     }
 
-    public void setStatus(Status status) {
+    public void setStatus(BookStatus status) {
         this.status = status;
     }
 
-    public Status borrow() {
-        if (status != Status.AVAILABLE) {
+    public BookStatus borrow() {
+        if (status != BookStatus.AVAILABLE) {
             throw new IllegalStateException("Книгу нельзя выдать");
         }
-        return Status.BORROWED;
+        return BookStatus.BORROWED;
     }
 
-    public Status giveBack() {
-        if (status != Status.BORROWED) {
+    public BookStatus giveBack() {
+        if (status != BookStatus.BORROWED) {
             throw new IllegalStateException("Книгу нельзя вернуть");
         }
-        return Status.AVAILABLE;
+        return BookStatus.AVAILABLE;
     }
 
-    public Status sendToRepair() {
-        if (status != Status.AVAILABLE) {
+    public BookStatus sendToRepair() {
+        if (status != BookStatus.AVAILABLE) {
             throw new IllegalStateException("Книгу нельзя сдать в ремонт");
         }
-        this.status = Status.IN_REPAIR;
-        return Status.IN_REPAIR;
+        this.status = BookStatus.IN_REPAIR;
+        return BookStatus.IN_REPAIR;
     }
 
     public Status finishRepair() {
-        if (status != Status.IN_REPAIR) {
+        if (status != BookStatus.IN_REPAIR) {
             throw new IllegalStateException("Книга не в ремонте ");
         }
-        this.status = Status.AVAILABLE;
+        this.status = BookStatus.AVAILABLE;
         return Status.AVAILABLE;
     }
 

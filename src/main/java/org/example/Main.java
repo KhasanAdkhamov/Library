@@ -1,9 +1,6 @@
 package org.example;
 
-import org.example.model.Book;
-import org.example.model.Repository;
-import org.example.model.Status;
-import org.example.model.User;
+import org.example.model.*;
 import org.example.service.LibraryService;
 import org.example.task.PracticeAdapter;
 
@@ -48,7 +45,7 @@ public class Main {
         List<Book> all = libraryService.getBooks().findAll();
         List<Book> newBooks = new ArrayList<>();
         for (Book book : all) {
-            if (book.getStatus() == Status.AVAILABLE) {
+            if (book.getStatus() == BookStatus.AVAILABLE) {
                 newBooks.add(book);
             }
         }

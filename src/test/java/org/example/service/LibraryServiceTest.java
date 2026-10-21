@@ -1,9 +1,6 @@
 package org.example.service;
 
-import org.example.model.Book;
-import org.example.model.Repository;
-import org.example.model.Status;
-import org.example.model.User;
+import org.example.model.*;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -95,7 +92,7 @@ public class LibraryServiceTest {
         Assertions.assertThrows(IllegalStateException.class, ()-> {
             libraryService.returnBook(user2.getId(), book1.getId());
         });
-        Assertions.assertEquals(Status.BORROWED, book1.getStatus());
+        Assertions.assertEquals(BookStatus.BORROWED, book1.getStatus());
         Assertions.assertTrue(user1.hasBook(book1));
     }
 
@@ -132,7 +129,7 @@ public class LibraryServiceTest {
     }
 
     @ParameterizedTest
-    @CsvSource({"1", "5", "7"})
+    @CsvSource({"6", "5", "7"})
     void testRepositoryIfNotId(Integer id) {
         Assertions.assertThrows(NoSuchElementException.class, ()-> {
            userRepository.getById(id);

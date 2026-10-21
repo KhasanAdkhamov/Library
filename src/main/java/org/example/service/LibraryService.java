@@ -1,9 +1,6 @@
 package org.example.service;
 
-import org.example.model.Book;
-import org.example.model.Repository;
-import org.example.model.Status;
-import org.example.model.User;
+import org.example.model.*;
 
 import java.util.*;
 
@@ -25,12 +22,12 @@ public class LibraryService{
         Book book = books.getById(bookId);
         User user = users.getById(userId);
         //book.borrow();
-        if (book.getStatus() != Status.AVAILABLE) {
+        if (book.getStatus() != BookStatus.AVAILABLE) {
             throw new IllegalStateException("Книгу нельзя выдать");
         }
 
         user.addBook(book);
-        book.setStatus(Status.BORROWED);
+        book.setStatus(BookStatus.BORROWED);
         System.out.println(user.getName() + " выдана книга " + book.getTitle());
     }
 
@@ -40,11 +37,11 @@ public class LibraryService{
         if (!user.hasBook(book)) {
             throw new IllegalStateException("книги нет у пользователя");
         }
-        if (book.getStatus() != Status.BORROWED) {
+        if (book.getStatus() != BookStatus.BORROWED) {
             throw new IllegalStateException("книга нельзя выдать");
         }
         user.removeBook(book);
-        book.setStatus(Status.AVAILABLE);
+        book.setStatus(BookStatus.AVAILABLE);
         System.out.println(user.getName() + " вернул " + book.getTitle() + " книгу обратно ");
     }
 
@@ -66,7 +63,7 @@ public class LibraryService{
 
     public void deleteBook(Integer bookId) {
         Book book = books.getById(bookId);
-        if (book.getStatus() != Status.AVAILABLE) {
+        if (book.getStatus() != BookStatus.AVAILABLE) {
             throw new IllegalStateException("нельзя удалить книгу, так как она у пользователя");
         }
         books.delete(bookId);

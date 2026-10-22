@@ -37,20 +37,6 @@ public class Main {
         libraryService.returnBook(user1.getId(), book2.getId());
 
 
-        //libraryService.borrowBook(user1.getId(), book2.getId());
-//        libraryService.returnBook(user1.getId(), book2.getId());
-//
-//        Map<String, Object> check = PracticeAdapter.check(List.of(1, 2, 3), List.of(4, 5, 6));
-//        System.out.println(check);
-        List<Book> all = libraryService.getBooks().findAll();
-        List<Book> newBooks = new ArrayList<>();
-        for (Book book : all) {
-            if (book.getStatus() == BookStatus.AVAILABLE) {
-                newBooks.add(book);
-            }
-        }
-        List<Book> list = newBooks.stream().sorted().toList();
-        System.out.println(list);
 
     }
 }

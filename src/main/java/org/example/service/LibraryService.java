@@ -21,13 +21,11 @@ public class LibraryService{
     public void borrowBook(Integer userId, Integer bookId) {
         Book book = books.getById(bookId);
         User user = users.getById(userId);
-        //book.borrow();
         if (book.getStatus() != BookStatus.AVAILABLE) {
             throw new IllegalStateException("Книгу нельзя выдать");
         }
-
         user.addBook(book);
-        book.setStatus(BookStatus.BORROWED);
+        book.borrow();
         System.out.println(user.getName() + " выдана книга " + book.getTitle());
     }
 
@@ -37,21 +35,18 @@ public class LibraryService{
         if (!user.hasBook(book)) {
             throw new IllegalStateException("книги нет у пользователя");
         }
-        if (book.getStatus() != BookStatus.BORROWED) {
-            throw new IllegalStateException("книга нельзя выдать");
-        }
         user.removeBook(book);
-        book.setStatus(BookStatus.AVAILABLE);
+        book.giveBack();
         System.out.println(user.getName() + " вернул " + book.getTitle() + " книгу обратно ");
     }
 
-    public Repository<Book> getBooks() {
-        return books;
-    }
+//    public Repository<Book> getBooks() {
+//        return books;
+//    }
 
-    public Repository<User> getUsers() {
-        return users;
-    }
+//    public Repository<User> getUsers() {
+//        return users;
+//    }
 
     public void setBooks(Repository<Book> books) {
         this.books = books;
@@ -83,18 +78,12 @@ public class LibraryService{
 
     public void sendToRepair(Integer bookId) {
         Book book = books.getById(bookId);
-        if (book.getStatus() != BookStatus.AVAILABLE) {
-            throw new IllegalStateException("книга недоступна для ремонта");
-        }
-        book.setStatus(BookStatus.IN_REPAIR);
+        book.sendToRepair();
         System.out.println("книга в ремонте");
     }
 
     public void finishRepair(Integer bookId) {
         Book book = books.getById(bookId);
-        if (book.getStatus() != BookStatus.IN_REPAIR) {
-            throw new IllegalStateException("книга не в ремонте");
-        }
-        book.setStatus(BookStatus.AVAILABLE);
+        book.finishRepair();
     }
 }

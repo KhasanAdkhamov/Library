@@ -39,14 +39,15 @@ public class Book implements Identifiable {
         return status;
     }
 
-    public void setStatus(BookStatus status) {
-        this.status = status;
-    }
+//    public void setStatus(BookStatus status) {
+//        this.status = status;
+//    }
 
     public BookStatus borrow() {
         if (status != BookStatus.AVAILABLE) {
             throw new IllegalStateException("Книгу нельзя выдать");
         }
+        this.status = BookStatus.BORROWED;
         return BookStatus.BORROWED;
     }
 
@@ -54,23 +55,22 @@ public class Book implements Identifiable {
         if (status != BookStatus.BORROWED) {
             throw new IllegalStateException("Книгу нельзя вернуть");
         }
+        this.status = BookStatus.AVAILABLE;
         return BookStatus.AVAILABLE;
     }
 
-    public BookStatus sendToRepair() {
+    public void sendToRepair() {
         if (status != BookStatus.AVAILABLE) {
             throw new IllegalStateException("Книгу нельзя сдать в ремонт");
         }
         this.status = BookStatus.IN_REPAIR;
-        return BookStatus.IN_REPAIR;
     }
 
-    public Status finishRepair() {
+    public void finishRepair() {
         if (status != BookStatus.IN_REPAIR) {
             throw new IllegalStateException("Книга не в ремонте ");
         }
         this.status = BookStatus.AVAILABLE;
-        return Status.AVAILABLE;
     }
 
 

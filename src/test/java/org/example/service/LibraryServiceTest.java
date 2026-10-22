@@ -121,7 +121,7 @@ public class LibraryServiceTest {
     }
 
     @ParameterizedTest
-    @CsvSource({"1, война и мир, Л.Т, 1970", "5, гордость и предупреждение, Д.А, 1999", "7, психология лжи, П.Э, 2002"})
+    @CsvSource({"1, война и мир, Л.Т, 1970", "2, гордость и предупреждение, Д.А, 1999", "3, психология лжи, П.Э, 2002"})
     void repositoryTest(Integer id, String title, String author, int year) {
         Assertions.assertThrows(IllegalStateException.class, () -> {
             bookRepository.add(new Book(id, title, author, year));
@@ -145,19 +145,12 @@ public class LibraryServiceTest {
         });
     }
 
-//    @Test
-//    void testFindAll() {
-//        userRepository.findAll().;
-//    }
+    @Test
+    void findAll() {
+        List<Book> all = bookRepository.findAll();
+        System.out.println(all);
+    }
 
-
-//    @Test
-//    void testBorrowBook() {
-//        int userId = 1;
-//        int bookId = 1;
-//        libraryService.borrowBook(user1.getId(), bookId);
-//        Assertions.assertFalse(libraryService.getBookById(bookId).isAvailable());
-//    }
 
 
 

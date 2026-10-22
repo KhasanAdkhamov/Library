@@ -37,6 +37,7 @@ public class Repository <T extends Identifiable>{
 
     public List<T> findAll() {
         List<T> list = elements.values().stream()
+                .sorted(Comparator.comparing(element -> element.getId()))
                 .toList();
         return List.copyOf(list);
     }

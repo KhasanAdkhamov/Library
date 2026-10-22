@@ -151,6 +151,19 @@ public class LibraryServiceTest {
         System.out.println(all);
     }
 
+    @Test
+    void whenBookBorrowedIsChangedStatusBookOrNot() {
+        libraryService.borrowBook(user1.getId(), book1.getId());
+        Assertions.assertEquals(BookStatus.BORROWED, book1.getStatus());
+    }
+
+    @Test
+    void whenBookReturnedIsChangedHisStatusOrNot() {
+        libraryService.borrowBook(user2.getId(), book2.getId());
+        libraryService.returnBook(user2.getId(), book2.getId());
+        Assertions.assertEquals(BookStatus.AVAILABLE, book2.getStatus());
+    }
+
 
 
 

@@ -63,6 +63,10 @@ public class LibraryService{
 
     public void deleteBook(Integer bookId) {
         Book book = books.getById(bookId);
+        if (book.getStatus() == BookStatus.IN_REPAIR) {
+            books.delete(bookId);
+            return;
+        }
         if (book.getStatus() != BookStatus.AVAILABLE) {
             throw new IllegalStateException("нельзя удалить книгу, так как она у пользователя");
         }
@@ -77,5 +81,20 @@ public class LibraryService{
         users.delete(user.getId());
     }
 
+    public void sendToRepair(Integer bookId) {
+        Book book = books.getById(bookId);
+        if (book.getStatus() != BookStatus.AVAILABLE) {
+            throw new IllegalStateException("книга недоступна для ремонта");
+        }
+        book.setStatus(BookStatus.IN_REPAIR);
+        System.out.println("книга в ремонте");
+    }
 
+    public void finishRepair(Integer bookId) {
+        Book book = books.getById(bookId);
+        if (book.getStatus() != BookStatus.IN_REPAIR) {
+            throw new IllegalStateException("книга не в ремонте");
+        }
+        book.setStatus(BookStatus.AVAILABLE);
+    }
 }

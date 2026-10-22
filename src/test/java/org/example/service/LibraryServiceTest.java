@@ -136,6 +136,15 @@ public class LibraryServiceTest {
         });
     }
 
+    @Test
+    void testDeleteBookIfItInRepair() {
+        libraryService.sendToRepair(book1.getId());
+        libraryService.deleteBook(book1.getId());
+        Assertions.assertThrows(NoSuchElementException.class, ()-> {
+            bookRepository.getById(book1.getId());
+        });
+    }
+
 //    @Test
 //    void testFindAll() {
 //        userRepository.findAll().;

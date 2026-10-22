@@ -2,8 +2,6 @@ package org.example.service;
 
 import org.example.model.*;
 
-import java.util.*;
-
 //если у нас id = null и книга без id, то мы без бросаем IllegalArgumentException
 //если у нас нет объекта с таким id NoSuchElementException
 //если книга уже выдана IllegalStateException

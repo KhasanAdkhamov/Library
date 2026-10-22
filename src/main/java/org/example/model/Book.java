@@ -39,10 +39,6 @@ public class Book implements Identifiable {
         return status;
     }
 
-//    public void setStatus(BookStatus status) {
-//        this.status = status;
-//    }
-
     public BookStatus borrow() {
         if (status != BookStatus.AVAILABLE) {
             throw new IllegalStateException("Книгу нельзя выдать");

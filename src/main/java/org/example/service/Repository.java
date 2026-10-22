@@ -1,4 +1,6 @@
-package org.example.model;
+package org.example.service;
+
+import org.example.model.Identifiable;
 
 import java.util.*;
 
@@ -22,10 +24,10 @@ public class Repository <T extends Identifiable>{
 
     public void add(T element) {
         if (element == null || element.getId() == null) {
-            throw new IllegalArgumentException("книга и ее id обязательны");
+            throw new IllegalArgumentException("объект и ее id обязательны");
         }
         if (elements.containsKey(element.getId())) {
-            throw new IllegalStateException("книга с id " + element.getId() + " уже есть");
+            throw new IllegalStateException("объект с id " + element.getId() + " уже есть");
         }
         elements.put(element.getId(), element);
     }

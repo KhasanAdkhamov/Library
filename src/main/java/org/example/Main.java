@@ -2,13 +2,7 @@ package org.example;
 
 import org.example.model.*;
 import org.example.service.LibraryService;
-import org.example.task.PracticeAdapter;
-
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-import java.util.jar.JarEntry;
+import org.example.service.Repository;
 
 public class Main {
     public static void main(String[] args) {

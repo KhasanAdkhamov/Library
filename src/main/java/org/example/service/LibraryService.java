@@ -33,8 +33,8 @@ public class LibraryService{
         if (!user.hasBook(book)) {
             throw new IllegalStateException("книги нет у пользователя");
         }
-        user.removeBook(book);
         book.giveBack();
+        user.removeBook(book);
         System.out.println(user.getName() + " вернул " + book.getTitle() + " книгу обратно ");
     }
 

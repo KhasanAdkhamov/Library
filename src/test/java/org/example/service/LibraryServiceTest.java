@@ -5,8 +5,10 @@ import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 //бросать соответствующее исключение
 //добавить объекты, которые используются в тестах
@@ -162,6 +164,21 @@ public class LibraryServiceTest {
         libraryService.borrowBook(user2.getId(), book2.getId());
         libraryService.returnBook(user2.getId(), book2.getId());
         Assertions.assertEquals(BookStatus.AVAILABLE, book2.getStatus());
+    }
+
+    @Test
+    void whenLoanCheckedByDate() {
+        libraryService.borrowBook(user1.getId(), book1.getId());
+        Assertions.assertEquals(libraryService.loanOf(book1.getId()), Optional.of(new Loan(book1.getId(), user1.getId(), LocalDate.parse("2026-10-29"))));
+    }
+
+    @Test
+    void whenYouShouldReturnBookInTime() {
+        libraryService.borrowBook(user2.getId(), book2.getId());
+        Optional<Loan> loan = libraryService.loanOf(book2.getId());
+        Assertions.assertEquals(loan.orElseThrow(()-> {
+            throw new NoSuchElementException("");
+        }).dueDate(), LocalDate.parse("2026-11-13"));
     }
 
 

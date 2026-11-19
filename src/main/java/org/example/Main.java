@@ -29,7 +29,7 @@ public class Main {
         userRepository.add(user2);
         libraryService.borrowBook(user1.getId(), book2.getId());
         libraryService.returnBook(user1.getId(), book2.getId());
-
+        System.out.println(book2.getStatus());
 
 
     }

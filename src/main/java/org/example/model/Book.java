@@ -18,6 +18,14 @@ public class Book implements Identifiable {
         this.status = BookStatus.AVAILABLE;
     }
 
+//    public Book(Integer id, String title, String author, int year, BookStatus bookStatus) {
+//        this.id = id;
+//        this.title = title;
+//        this.author = author;
+//        this.year = year;
+//        this.status = bookStatus;
+//    }
+
     @Override
     public Integer getId() {
         return id;

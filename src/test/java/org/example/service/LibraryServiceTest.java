@@ -6,6 +6,9 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
 import java.time.LocalDate;
+import java.time.Period;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -22,6 +25,7 @@ public class LibraryServiceTest {
     private Book book1;
     private Book book2;
     private Book book3;
+    private static final LocalDate DATE_DEFAULT = LocalDate.of(2026, 11, 1);
 
 
     @BeforeEach
@@ -168,18 +172,27 @@ public class LibraryServiceTest {
 
     @Test
     void whenLoanCheckedByDate() {
-        libraryService.borrowBook(user1.getId(), book1.getId());
-        Assertions.assertEquals(libraryService.loanOf(book1.getId()), Optional.of(new Loan(book1.getId(), user1.getId(), LocalDate.parse("2026-10-29"))));
+        libraryService.borrowBook(user1.getId(), book1.getId(), DATE_DEFAULT);
+        Assertions.assertEquals(libraryService.loanOf(book1.getId()), Optional.of(new Loan(book1.getId(), user1.getId(), DATE_DEFAULT)));
     }
 
     @Test
     void whenYouShouldReturnBookInTime() {
-        libraryService.borrowBook(user2.getId(), book2.getId());
+        libraryService.borrowBook(user2.getId(), book2.getId(), DATE_DEFAULT);
         Optional<Loan> loan = libraryService.loanOf(book2.getId());
         Assertions.assertEquals(loan.orElseThrow(()-> {
             throw new NoSuchElementException("");
-        }).dueDate(), LocalDate.parse("2026-11-13"));
+        }).dueDate(), LocalDate.of(2026, 11,15));
     }
+
+    @Test
+    void whenYouReturnBookNotLateBeforeOnDate() {
+        Loan loan = new Loan(book1.getId(), user1.getId(), DATE_DEFAULT);
+        Assertions.assertEquals(0, loan.daysLate(LocalDate.of(2026, 11, 15)));
+        Assertions.assertEquals(3, loan.daysLate(LocalDate.of(2026, 11, 18)));
+    }
+
+
 
 
 

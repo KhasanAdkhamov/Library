@@ -20,7 +20,7 @@ public record Loan(Integer bookId, Integer userId, LocalDate takenOn) {
     }
 
     public long daysLate(LocalDate today) {
-        return Math.max(0, ChronoUnit.DAYS.between(today, dueDate()));
+        return Math.max(0, ChronoUnit.DAYS.between(dueDate(), today));
     }
 
     public boolean isOverdue(LocalDate today) {

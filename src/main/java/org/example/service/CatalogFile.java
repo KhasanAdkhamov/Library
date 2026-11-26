@@ -11,6 +11,7 @@ import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CatalogFile {
     private static final String HEADER = "id;title;author;year;status";
@@ -51,16 +52,22 @@ public class CatalogFile {
 
     }
 
-    public static List<String> write(List<Book> list) throws IOException {
-        return new ArrayList<>();
+    public static List<String> write(List<Book> list) {
+        List<String> listBook = new ArrayList<>();
+        listBook.add(HEADER);
+        for (Book book : list) {
+            listBook.add(toLine(book));
+        }
+        return listBook;
     }
 
-    public static List<Book> load(Path path) {
-        return new ArrayList<>();
+    public static List<Book> load(Path path) throws IOException {
+        return read(Files.readAllLines(path));
     }
 
     public static List<Book> read(List<String> list) {
         List<Book> listBook = new ArrayList<>();
+        Map<Integer, String> idBookMap = new HashMap<>();
         if(list == null || list.isEmpty()) {
             throw new IllegalArgumentException("список пустой");
         }
@@ -68,15 +75,20 @@ public class CatalogFile {
             throw new IllegalArgumentException("Нет заголовка");
         }
         for (int i = 1; i < list.size(); i++) {
-            if (list.get(i) == null || list.get(i).strip().isEmpty()) {
+            if (list.get(i) == null || list.get(i).isBlank()) {
                 continue;
             }
+            Book book;
             try {
-                Book book = parse(list.get(i));
-                listBook.add(book);
+                book = parse(list.get(i));
             } catch (IllegalArgumentException ex) {
                 throw new IllegalArgumentException("Строка " + (i +1) + " " + ex.getMessage());
             }
+            if (idBookMap.containsKey(book.getId())) {
+                throw new IllegalArgumentException("Строка " + (i + 1) + ": id " + book.getId() + " уже есть в строке " + idBookMap.get(book.getId()));
+            }
+            idBookMap.put(book.getId(), String.valueOf(i + 1));
+            listBook.add(book);
         }
         return List.copyOf(listBook);
     }

@@ -2,8 +2,18 @@ package org.example.service;
 
 import org.example.model.Book;
 import org.example.model.BookStatus;
+import org.example.model.Loan;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class CatalogFile {
+    private static final String HEADER = "id;title;author;year;status";
 
     public static String toLine(Book book) {
         return book.getId() + ";" + book.getTitle() + ";" + book.getAuthor() + ";" + book.getYear() + ";" + book.getStatus();
@@ -34,5 +44,40 @@ public class CatalogFile {
         } catch (NumberFormatException error) {
             throw new IllegalArgumentException("Не число в строке: " + line);
         }
+    }
+
+    public static void save(Path path, List<Book> list) throws IOException{
+        Files.write(path, write(list));
+
+    }
+
+    public static List<String> write(List<Book> list) throws IOException {
+        return new ArrayList<>();
+    }
+
+    public static List<Book> load(Path path) {
+        return new ArrayList<>();
+    }
+
+    public static List<Book> read(List<String> list) {
+        List<Book> listBook = new ArrayList<>();
+        if(list == null || list.isEmpty()) {
+            throw new IllegalArgumentException("список пустой");
+        }
+        if(!list.getFirst().strip().equals(HEADER)) {
+            throw new IllegalArgumentException("Нет заголовка");
+        }
+        for (int i = 1; i < list.size(); i++) {
+            if (list.get(i) == null || list.get(i).strip().isEmpty()) {
+                continue;
+            }
+            try {
+                Book book = parse(list.get(i));
+                listBook.add(book);
+            } catch (IllegalArgumentException ex) {
+                throw new IllegalArgumentException("Строка " + (i +1) + " " + ex.getMessage());
+            }
+        }
+        return List.copyOf(listBook);
     }
 }

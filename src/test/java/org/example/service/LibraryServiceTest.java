@@ -192,6 +192,16 @@ public class LibraryServiceTest {
         Assertions.assertEquals(3, loan.daysLate(LocalDate.of(2026, 11, 18)));
     }
 
+    @Test
+    void whenYouCompareObjectsAfterBorrowing() {
+        libraryService.borrowBook(user1.getId(), book1.getId());
+        String line = CatalogFile.toLine(book1);
+        Book parsedBook = CatalogFile.parse(line);
+        Assertions.assertEquals("1;война и мир;Л.Т;1970;BORROWED", line);
+        Assertions.assertEquals(book1.getId(), parsedBook.getId());
+        Assertions.assertEquals(book1.getStatus(), parsedBook.getStatus());
+    }
+
 
 
 
